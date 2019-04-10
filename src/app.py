@@ -5,6 +5,11 @@ app = Flask(__name__)
 
 
 @app.route("/", methods=["GET"])
+def home_redirect():
+    return redirect("/home")
+
+
+@app.route("/home", methods=["GET"])
 def home_get():
     return render_template('home.html')
 
