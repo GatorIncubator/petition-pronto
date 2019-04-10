@@ -1,5 +1,6 @@
 from flask import render_template, Flask, Response, redirect, url_for, request, abort, session
 import os
+import login_handler
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -30,8 +31,8 @@ def login_get():
 def login_post():
     email = request.form['email']
     password = request.form['password']
-    print("HI")
-    if email == "email@email.com" and password == "password":
+    valid = login_handler.validate_user(email, password)
+    if valid:
         session['logged_in'] = True
         session['email'] = email
         return redirect("/petitions")
