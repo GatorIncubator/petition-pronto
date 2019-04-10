@@ -1,7 +1,8 @@
 from flask import render_template, Flask, Response, redirect, url_for, request, abort, session
-
+import os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(16)
 
 
 @app.route("/", methods=["GET"])
@@ -29,10 +30,18 @@ def login_get():
 def login_post():
     email = request.form['email']
     password = request.form['password']
-    if email == "email" and password == "password":
+    print("HI")
+    if email == "email@email.com" and password == "password":
+        session['logged_in'] = True
+        session['email'] = email
         return redirect("/petitions")
     else:
-        redirect("/login")
+        return redirect("/invalid_login")
+
+
+@app.route("/invalid_login", methods=["GET"])
+def invalid_login_get():
+    return render_template("invalid_login.html")
 
 
 @app.route("/petitions", methods=["GET"])
