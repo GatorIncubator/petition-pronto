@@ -44,6 +44,12 @@ def invalid_login_get():
     return render_template("invalid_login.html")
 
 
+@app.route("/logout", methods=["GET"])
+def logout_get():
+    session.clear()
+    return redirect("/home")
+
+
 @app.route("/petitions", methods=["GET"])
 def petitions_get():
     if session.get('logged_in'):
