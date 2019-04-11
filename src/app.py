@@ -2,6 +2,7 @@ from flask import render_template, Flask, Response, redirect, url_for, request, 
 import os
 import login_handler
 
+
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
