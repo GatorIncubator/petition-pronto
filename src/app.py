@@ -63,12 +63,22 @@ def petitions_get():
         return redirect("/home")
 
 
-@app.route("/petitions/<id>")
+@app.route("/petitions/<id>", methods=["GET"])
 def petitions_inspect_get(id):
     if session.get('logged_in'):
         # petition_info = database_handler.get_petition_info(id)
         petition_info = {'id':id,'name':"Austin Bristol",'email':"bristola@allegheny.edu",'department':'Computer Science','content':'This is some petition for something.'}
         return render_template("petition_info.html", petition_info=petition_info)
+    else:
+        return redirect("/home")
+
+
+@app.route("/petitions/<id>", methods=["POST"])
+def petitions_inspect_post(id):
+    if session.get('logged_in'):
+        approved = request.form['approved']
+        print(approved)
+        return redirect("/petitions")
     else:
         return redirect("/home")
 
