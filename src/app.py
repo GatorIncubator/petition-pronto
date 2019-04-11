@@ -1,6 +1,7 @@
 from flask import render_template, Flask, Response, redirect, url_for, request, abort, session
 import os
 import login_handler
+import database_handler
 
 
 app = Flask(__name__)
@@ -55,7 +56,9 @@ def logout_get():
 @app.route("/petitions", methods=["GET"])
 def petitions_get():
     if session.get('logged_in'):
-        return render_template('petitions.html')
+        # petitions = database_handler.get_petitions(session['email'])
+        petitions = [{'id':1,'name':"Austin Bristol",'email':"bristola@allegheny.edu",'department':'Computer Science'},{'id':2,'name':'Bob','email':'bob@allegheny.edu','department':'Computer Science'}]
+        return render_template('petitions.html', petitions=petitions)
     else:
         return redirect("/home")
 

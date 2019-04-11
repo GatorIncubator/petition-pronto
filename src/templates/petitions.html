@@ -10,5 +10,12 @@
     <body>
         <h1>Petitions</h1>
         <a href="/logout">Logout</a>
+        <hr>
+        <h2>Open Petitions</h2>
+        <ul>
+            {% for petition in petitions %}
+            <li>Name:{{petition['name']}} | Email:{{petition['email']}} | Department:{{petition['department']}}</li>
+            {% endfor %}
+        </ul>
     </body>
 </html>
