@@ -26,7 +26,10 @@ def validate_user(email, password):
     password_query = "SELECT password FROM User_Table WHERE email = \"{A}\"".format(A = email)
     password_query_obj = conn.execute(password_query)
     password_tuple = password_query_obj.fetchone()
-    password_result = password_tuple[0]
+    try:
+        password_result = password_tuple[0]
+    except:
+        password_result = ""
 
     #if email == email_result and password == password_result:
     print("***If", email, "==", email_result, "and", password, "==", password_result)
