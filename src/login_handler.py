@@ -10,18 +10,15 @@ tables_dict = {"User_Table": 5,
 
 def validate_user(email, password):
     """Validates the user identity using information from database."""
-    user_email = email
-    user_password = password
     conn = sqlite3.connect("petitiondb.sqlite3") # connect to the database
 
     email_query = "SELECT email FROM User_Table WHERE email = \"{A}\"".format(A = email)
-    email_query_obj = conn.execute(email_query)
-    email_tuple = email_query_obj.fetchone()
+    email_query_obj = conn.execute(email_query) # execute query that checks for valid email
+    email_tuple = email_query_obj.fetchone() # store results of query - in a tuple
     try:
         email_result = email_tuple[0]
     except:
-        email_result = ""
-
+        email_result = "" # if query returns no results, store it as an empty string
 
     password_query = "SELECT password FROM User_Table WHERE email = \"{A}\"".format(A = email)
     password_query_obj = conn.execute(password_query)
@@ -31,19 +28,10 @@ def validate_user(email, password):
     except:
         password_result = ""
 
-    #if email == email_result and password == password_result:
     print("***If", email, "==", email_result, "and", password, "==", password_result)
     if email == email_result and password == password_result:
         return True
     else:
         return False
+
     conn.close()
-
-
-def validate_user_old(email, password):
-    # This is placeholder implementation. Needs to be implemented with database.
-    if email == "email@email.com" and password == "password":
-        return True
-    else:
-        return False
-#open my database connection
