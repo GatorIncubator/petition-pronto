@@ -9,22 +9,25 @@ tables_dict = {"User_Table": 5,
 }
 
 def validate_user(email, password):
-    """Validates the user identity."""
-    # if email == "email@email.com" and password == "password":
-    #     return True
-    # else:
-    #     return False
-    #select password from user_table where email2 = email
-    email_query = "SELECT email FROM User_Table WHERE email = \"{A}".format(A = email)
-    password_query = "SELECT password FROM User_Table WHERE email = \"{A}".format(A = email)
-    if email == email_query and password == password_query:
+    """Validates the user identity using information from database."""
+    conn = sqlite3.connect("petitiondb.sqlite3") # connect to the database
+    email_query = "SELECT email FROM User_Table WHERE email = \"{A}\"".format(A = email)
+    email_result = conn.execute(email_query)
+    password_query = "SELECT password FROM User_Table WHERE email = \"{A}\"".format(A = email)
+    password_result = conn.execute(password_query)
+
+    #if email == email_result and password == password_result:
+    if email == email_result and password == password_result:
         return True
     else:
         return False
+    conn.close()
 
-sqlite3Filename = "petitiondb.sqlite3"
 
+def validate_user_old(email, password):
+    # This is placeholder implementation. Needs to be implemented with database.
+    if email == "email@email.com" and password == "password":
+        return True
+    else:
+        return False
 #open my database connection
-conn = sqlite3.connect(sqlite3Filename) # connect to the database
-
-conn.close()
