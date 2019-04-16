@@ -1,12 +1,6 @@
-#!/usr/bin/env python3
+"""Login handler that validates a user's login information."""
 
 import sqlite3
-
-# use a dictionary to keep track of how many attributes there are per table.
-tables_dict = {"User_Table": 5,
-"Student_Petition": 4,
-"Department": 2
-}
 
 def validate_user(email, password):
     """Validates the user identity using information from database."""
