@@ -53,6 +53,37 @@ def logout_get():
     return redirect("/home")
 
 
+@app.route("/change_password", methods=["GET"])
+def change_password_get():
+    if session.get('logged_in'):
+        return render_template("change_password.html")
+    else:
+        return redirect("/home")
+
+
+@app.route("/change_password", methods=["POST"])
+def change_password_post():
+    if session.get('logged_in'):
+        password = request.form['password']
+        confirm_password = request.form["confirm_password"]
+        if password == confirm_password:
+            # database_handler.update_password(session.get('email'), new_password)
+            print(password)
+            return redirect("/petitions")
+        else:
+            return redirect("/invalid_confirmation")
+    else:
+        return redirect("/home")
+
+
+@app.route("/invalid_confirmation", methods=["GET"])
+def invalid_confirmation_get():
+    if session.get('logged_in'):
+        return render_template("invalid_confirmation.html")
+    else:
+        return redirect("/home")
+
+
 @app.route("/petitions", methods=["GET"])
 def petitions_get():
     if session.get('logged_in'):
