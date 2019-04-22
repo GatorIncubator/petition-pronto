@@ -87,9 +87,12 @@ def invalid_confirmation_get():
 @app.route("/petitions", methods=["GET"])
 def petitions_get():
     if session.get('logged_in'):
-        # petitions = database_handler.get_petitions(session['email'])
-        petitions = [{'id':1,'name':"Austin Bristol",'email':"bristola@allegheny.edu",'department':'Computer Science'},{'id':2,'name':'Bob','email':'bob@allegheny.edu','department':'Computer Science'}]
-        return render_template("petitions.html", petitions=petitions)
+        petitions = database_handler.get_petitions(session['email'])
+        out_petitions = list()
+        for petition in petitions:
+            new_petition = {'id':petition[3],'name':petition[0],'email':petition[1],'department':petition[2]}
+            out_petitions.append(new_petition)
+        return render_template("petitions.html", petitions=out_petitions)
     else:
         return redirect("/home")
 
@@ -97,9 +100,9 @@ def petitions_get():
 @app.route("/petitions/<id>", methods=["GET"])
 def petitions_inspect_get(id):
     if session.get('logged_in'):
-        # petition_info = database_handler.get_petition_info(id)
-        petition_info = {'id':id,'name':"Austin Bristol",'email':"bristola@allegheny.edu",'department':'Computer Science','content':'This is some petition for something.'}
-        return render_template("petition_info.html", petition_info=petition_info)
+        petition = database_handler.get_petition_info(id)
+        new_petition_info = {'id':petition[4],'name':petition[0],'email':petition[1],'department':petition[3],'content':petition[2]}
+        return render_template("petition_info.html", petition_info=new_petition_info)
     else:
         return redirect("/home")
 
