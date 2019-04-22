@@ -37,12 +37,36 @@
         </nav>
         <div class="container">
         	<div class="jumbotron">
-        		<h1> <i class="fas fa-file-alt" aria-hidden="true"></i> The Image Gallery</h1>
+        		<h1> <i class="fas fa-file-alt" aria-hidden="true"></i>Petition Pronto </h1>
             <i class="fas fa-file-alt"></i>
-        		<p>A bunch of beautiful imgaes (They are not mine)</p>
-
-
+        		<p>A web-base petition system that allows students to upload a petition for a change in their graduation requirements.</p>
         	</div>
+
+          <form  method="post">
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" name="studentemail" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+              <label for="petition_title">Petition Title</label>
+              <input type="text" name="Petiton_title" id="Petiton_title" class="form-control input-lg" data-error_msg="Please enter petition title.">
+            </div>
+            <div class="form-group">
+              <label for="petiton_description">Petition details</label>
+              <textarea name="petiton_description" rows="5"  class="form-control input-lg" id="petiton_description" data-error_msg = "Please enter petition details"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="Deparment-selection">Please select department</label>
+              <select class="form-control" name="Deparment-selection" id="exampleFormControlSelect1">
+                <option>Computer Science</option>
+                  <option>Economics</option>
+
+              </select>
+            </div>
+            <input type="submit" name="Upload" value="Submit Petition" class="btn btn-lg btn-success" id="bptm_external_form_submit" tabindex="8" action="">
+
+
+          </form>
 
 
     </body>
