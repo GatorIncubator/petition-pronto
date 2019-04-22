@@ -53,10 +53,7 @@ def change_password(email, new_password):
 
     change_pass_query = "UPDATE User_Table SET password = \"{A}\" WHERE email = \"{B}\"".format(A = new_password, B = email)
     print(change_pass_query)
-    conn.execute(change_pass_query)
+    cur = conn.cursor()
+    cur.execute(change_pass_query)
+    conn.commit()
     conn.close()
-
-
-email = "email1@email.com"
-new_password = "pass1234"
-change_password(email, new_password)
