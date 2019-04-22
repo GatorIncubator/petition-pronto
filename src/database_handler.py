@@ -18,9 +18,8 @@ def get_petitions(email):
     except:
         dept_result = ""  # if query returns no results/an error, set value as empty string
 
-    print(dept_result)
     # Find petitions for that department:
-    petition_query = "SELECT * FROM Student_Petition WHERE department = \"{A}\"".format(A = dept_result)
+    petition_query = "SELECT name, email, department, petitionID FROM Student_Petition WHERE department = \"{A}\"".format(A = dept_result)
     petition_query_obj = conn.execute(petition_query)
     petition_list = petition_query_obj.fetchall()  # store results of query - in a tuple
     try:
@@ -28,10 +27,7 @@ def get_petitions(email):
     except:
         petition_results = ""  # if query returns no results/an error, set value as empty string
 
-    print(petition_results)
-
-email = "email1@email.com"
-get_petitions(email)
+    return(petition_results)
 
 
 def get_petition_info(id):
@@ -47,3 +43,12 @@ def get_petition_info(id):
         peitition_info = ""
 
     return petition_info
+
+
+# Testing:
+email = "email1@email.com"
+acquired_petitions = get_petitions(email)
+print(acquired_petitions)
+myID = 1
+the_petition_info = get_petition_info(myID)
+print(the_petition_info)
