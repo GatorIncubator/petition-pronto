@@ -43,12 +43,3 @@ def get_petition_info(id):
         peitition_info = ""
 
     return petition_info
-
-
-# Testing:
-email = "email1@email.com"
-acquired_petitions = get_petitions(email)
-print(acquired_petitions)
-myID = 1
-the_petition_info = get_petition_info(myID)
-print(the_petition_info)
