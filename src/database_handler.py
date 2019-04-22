@@ -28,6 +28,7 @@ def get_petitions(email):
         petition_results = ""  # if query returns no results/an error, set value as empty string
 
     return(petition_results)
+    conn.close()
 
 
 def get_petition_info(id):
@@ -43,3 +44,19 @@ def get_petition_info(id):
         peitition_info = ""
 
     return petition_info
+    conn.close()
+
+
+def change_password(email, new_password):
+    """Changes the password based on the given email."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+
+    change_pass_query = "UPDATE User_Table SET password = \"{A}\" WHERE email = \"{B}\"".format(A = new_password, B = email)
+    print(change_pass_query)
+    conn.execute(change_pass_query)
+    conn.close()
+
+
+email = "email1@email.com"
+new_password = "pass1234"
+change_password(email, new_password)
