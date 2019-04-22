@@ -2,7 +2,7 @@
 
 import sqlite3
 
-get_petitions(email):
+def get_petitions(email):
     """Connects to database and gets list of petitions associated with the
     department of the input email."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
@@ -14,23 +14,27 @@ get_petitions(email):
     dept_query_obj = conn.execute(department_query)
     dept_tuple = dept_query_obj.fetchone()  # store results of query - in a tuple
     try:
-        dept_result = email_tuple[0]  # if query returns a result, store it as a string
+        dept_result = dept_tuple[0]  # if query returns a result, store it as a string
     except:
         dept_result = ""  # if query returns no results/an error, set value as empty string
 
+    print(dept_result)
     # Find petitions for that department:
     petition_query = "SELECT * FROM Student_Petition WHERE department = \"{A}\"".format(A = dept_result)
     petition_query_obj = conn.execute(petition_query)
-    petition_tuple = petition_query_obj.fetchall()  # store results of query - in a tuple
+    petition_list = petition_query_obj.fetchall()  # store results of query - in a tuple
     try:
-        petition_results.append(petition_tuple[i])  # if query returns a result, store it as a string
+        petition_results = petition_list # if query returns a result, store it as a string
     except:
         petition_results = ""  # if query returns no results/an error, set value as empty string
 
-    return petition_results
+    print(petition_results)
+
+email = "email1@email.com"
+get_petitions(email)
 
 
-get_petition_info(id):
+def get_petition_info(id):
     """Connects to the database and gets info about a specific petition."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
 
