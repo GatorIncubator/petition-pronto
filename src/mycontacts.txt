@@ -1,3 +1,0 @@
-user@computer ~ $ cat mycontacts.txt
-jerm jermdigital@gmail.com
-jeremy moorejjeremy@gmail.com
