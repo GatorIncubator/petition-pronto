@@ -1,8 +1,9 @@
 import smtplib
 import config
 
-""" Email a person with subject and message """
+
 def send_email(subject, msg):
+    """Email a person with subject and message."""
     try:
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.ehlo()
