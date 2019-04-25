@@ -58,7 +58,7 @@ def change_password(email, new_password):
     conn.close()
 
 
-id = 0
+id = 0  # set started ID value for users in User_Table
 def create_account(email, password, role, department):
     """Creates a user account."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
@@ -74,7 +74,8 @@ def create_account(email, password, role, department):
     id = max_id + 1  # create newest id
 
     create_user_insert = "INSERT INTO User_Table(id, email, password, role, department) VALUES({A}, \"{B}\", \"{C}\", \"{D}\", {E})".format(A = id, B = email, C = password, D = role, E = department)
+
     cur = conn.cursor()
     cur.execute(create_user_insert)  # execute the creation
-    conn.commit()
-    conn.close()
+    conn.commit()  # commit changes to the database
+    conn.close()  # close database connection
