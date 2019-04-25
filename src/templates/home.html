@@ -42,18 +42,18 @@
         		<p>A web-base petition system that allows students to upload a petition for a change in their graduation requirements.</p>
         	</div>
 
-          <form method="post">
+          <form action="/home" method="post">
             <div class="form-group">
               <label for="email">Email address</label>
-              <input type="email" name="studentemail" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              <input type="email" name="student_email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
             </div>
             <div class="form-group">
               <label for="studen_name">Your Name</label>
-              <input type="text" name="studentemail" class="form-control" id="exampleFormControlInput1" placeholder="">
+              <input type="text" name="student_name" class="form-control" id="exampleFormControlInput1" placeholder="">
             </div>
             <div class="form-group">
               <label for="petition_title">Petition Title</label>
-              <input type="text" name="Petiton_title" id="Petiton_title" class="form-control input-lg" data-error_msg="Please enter petition title.">
+              <input type="text" name="petiton_title" id="Petiton_title" class="form-control input-lg" data-error_msg="Please enter petition title.">
             </div>
             <div class="form-group">
               <label for="petiton_description">Petition details</label>
@@ -61,9 +61,9 @@
             </div>
             <div class="form-group">
               <label for="Deparment-selection">Please select department</label>
-              <select class="form-control" name="Deparment-selection" id="exampleFormControlSelect1">
+              <select class="form-control" name="deparment-selection" id="exampleFormControlSelect1">
                 <option>Computer Science</option>
-                  <option>Economics</option>
+                <option>Economics</option>
 
               </select>
             </div>
