@@ -71,3 +71,9 @@ def create_account(email, password, role, department):
         max_id = 0
 
     id = max_id + 1
+
+    create_user_insert = "INSERT INTO User_Table(id, email, password, role, department) VALUES({A}, \"{B}\", \"{C}\", \"{D}\", {E})".format(A = id, B = email, C = password, D = role, E = department)
+    cur = conn.cursor()
+    cur.execute(create_user_insert)
+    conn.commit()
+    conn.close()
