@@ -1,6 +1,8 @@
 from flask import render_template, Flask, Response, redirect, url_for, request, abort, session
 import os
 import login_handler
+import database_handler
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -51,10 +53,66 @@ def logout_get():
     return redirect("/home")
 
 
+@app.route("/change_password", methods=["GET"])
+def change_password_get():
+    if session.get('logged_in'):
+        return render_template("change_password.html")
+    else:
+        return redirect("/home")
+
+
+@app.route("/change_password", methods=["POST"])
+def change_password_post():
+    if session.get('logged_in'):
+        password = request.form['password']
+        confirm_password = request.form["confirm_password"]
+        if password == confirm_password:
+            # database_handler.update_password(session.get('email'), new_password)
+            print(password)
+            return redirect("/petitions")
+        else:
+            return redirect("/invalid_confirmation")
+    else:
+        return redirect("/home")
+
+
+@app.route("/invalid_confirmation", methods=["GET"])
+def invalid_confirmation_get():
+    if session.get('logged_in'):
+        return render_template("invalid_confirmation.html")
+    else:
+        return redirect("/home")
+
+
 @app.route("/petitions", methods=["GET"])
 def petitions_get():
     if session.get('logged_in'):
-        return render_template('petitions.html')
+        petitions = database_handler.get_petitions(session['email'])
+        out_petitions = list()
+        for petition in petitions:
+            new_petition = {'id':petition[3],'name':petition[0],'email':petition[1],'department':petition[2]}
+            out_petitions.append(new_petition)
+        return render_template("petitions.html", petitions=out_petitions)
+    else:
+        return redirect("/home")
+
+
+@app.route("/petitions/<id>", methods=["GET"])
+def petitions_inspect_get(id):
+    if session.get('logged_in'):
+        petition = database_handler.get_petition_info(id)
+        new_petition_info = {'id':petition[4],'name':petition[0],'email':petition[1],'department':petition[3],'content':petition[2]}
+        return render_template("petition_info.html", petition_info=new_petition_info)
+    else:
+        return redirect("/home")
+
+
+@app.route("/petitions/<id>", methods=["POST"])
+def petitions_inspect_post(id):
+    if session.get('logged_in'):
+        approved = request.form['approved']
+        print(approved)
+        return redirect("/petitions")
     else:
         return redirect("/home")
 
