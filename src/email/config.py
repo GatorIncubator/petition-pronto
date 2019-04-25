@@ -1,3 +1,3 @@
-EMAIL_ADDRESS = "jermdigital@gmail.com"
-PASSWORD = "daJd7788"
-EMAIL_RECIEVER ="baldeosinghm@allegheny.edu", "moorej2@allegheny.edu"
+EMAIL_ADDRESS = "petitionpronto@gmail.com"
+PASSWORD = "prontoPass1815"
+EMAIL_RECIEVER ="lussierc@allegheny.edu", "bristola@allegheny.edu"
