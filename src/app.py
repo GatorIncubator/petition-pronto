@@ -33,10 +33,11 @@ def login_get():
 def login_post():
     email = request.form['email']
     password = request.form['password']
-    valid = login_handler.validate_user(email, password)
+    valid, admin = login_handler.validate_user(email, password)
     if valid:
         session['logged_in'] = True
         session['email'] = email
+        session['admin'] = admin
         return redirect("/petitions")
     else:
         return redirect("/invalid_login")
@@ -84,6 +85,29 @@ def invalid_confirmation_get():
         return redirect("/home")
 
 
+@app.route("/create_account", methods=["GET"])
+def create_account_get():
+    if session.get('logged_in') and session.get("admin"):
+        return render_template("create_account.html")
+    else:
+        return redirect("/home")
+
+
+@app.route("/create_account", methods=["POST"])
+def create_account_post():
+    if session.get('logged_in') and session.get("admin"):
+        email = request.form['email']
+        password = request.form['password']
+        department = request.form['department']
+        role = request.form['role']
+        # database_handler.create_account(email, password, department, role)
+        print(email)
+        print(password)
+        print(department)
+        print(role)
+    return redirect("/petitions")
+
+
 @app.route("/petitions", methods=["GET"])
 def petitions_get():
     if session.get('logged_in'):
@@ -92,7 +116,7 @@ def petitions_get():
         for petition in petitions:
             new_petition = {'id':petition[3],'name':petition[0],'email':petition[1],'department':petition[2]}
             out_petitions.append(new_petition)
-        return render_template("petitions.html", petitions=out_petitions)
+        return render_template("petitions.html", petitions=out_petitions, admin=session["admin"])
     else:
         return redirect("/home")
 
