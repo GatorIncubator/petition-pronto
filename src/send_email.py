@@ -10,7 +10,7 @@ def send_email(subject, msg):
         server.starttls()
         server.login(config.EMAIL_ADDRESS, config.PASSWORD)
         message = 'Subject: {}\n\n{}'.format(subject, msg)
-        server.sendmail(config.EMAIL_ADDRESS, config.EMAIL_ADDRESS, message)
+        server.sendmail(config.EMAIL_RECIEVER, config.EMAIL_RECIEVER, message)
         server.quit()
         print("Success: Email sent!")
     except:
@@ -18,6 +18,6 @@ def send_email(subject, msg):
 
 
 subject = "Petition-Pronto"
-msg = "Your Petition has been approved"
+msg = "Your petition was approved"
 
 send_email(subject, msg)
