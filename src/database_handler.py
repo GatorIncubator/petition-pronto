@@ -52,8 +52,22 @@ def change_password(email, new_password):
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
 
     change_pass_query = "UPDATE User_Table SET password = \"{A}\" WHERE email = \"{B}\"".format(A = new_password, B = email)
-    print(change_pass_query)
     cur = conn.cursor()
     cur.execute(change_pass_query)
     conn.commit()
     conn.close()
+
+id = 0
+def create_account(email, password, role, department):
+    """Creates a user account."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+
+    max_id_query = "SELECT max(id) FROM User_Table"
+    max_id_obj = conn.execute(max_id_query)
+    max_id_tuple = max_id_obj.fetchall()
+    try:
+        max_id = max_id_tuple[0][0]
+    except:
+        max_id = 0
+
+    id = max_id + 1
