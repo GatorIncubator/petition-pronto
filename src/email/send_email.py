@@ -1,8 +1,7 @@
 import smtplib
 import config
 
-
-def send_email(subject, msg):
+def send_email(subject, msg, EMAIL_RECIEVER):
     """Email a person with subject and message."""
     try:
         server = smtplib.SMTP('smtp.gmail.com:587')
@@ -10,7 +9,7 @@ def send_email(subject, msg):
         server.starttls()
         server.login(config.EMAIL_ADDRESS, config.PASSWORD)
         message = 'Subject: {}\n\n{}'.format(subject, msg)
-        server.sendmail(config.EMAIL_RECIEVER, config.EMAIL_RECIEVER, message)
+        server.sendmail(EMAIL_RECIEVER, EMAIL_RECIEVER, message)
         server.quit()
         print("Success: Email sent!")
     except:
@@ -19,5 +18,6 @@ def send_email(subject, msg):
 
 subject = "Petition-Pronto"
 msg = "Your petition was approved"
+EMAIL_RECIEVER ="lussierc@allegheny.edu", "christianll@yahoo.com"
 
-send_email(subject, msg)
+send_email(subject, msg, EMAIL_RECIEVER)
