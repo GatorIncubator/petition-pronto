@@ -107,9 +107,10 @@ def submit_decision(petitionID, approval_decision):
     except:
         print("no")
 
-    #add_review = "UPDATE Approval_Responses SET numOfResponses = {A} WHERE petitionID = {B}".format(A = numOfResponses, B = petitionID)
-    #cur.execute(add_review)
-    #conn.commit()
+    numOfResponses += 1
+    add_review = "UPDATE Approval_Responses SET numOfResponses = {A} WHERE petitionID = {B}".format(A = numOfResponses, B = petitionID)
+    cur.execute(add_review)
+    conn.commit()
 
     conn.close()  # close database connection
 
