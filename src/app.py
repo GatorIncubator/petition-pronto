@@ -86,8 +86,7 @@ def change_password_post():
         password = request.form['password']
         confirm_password = request.form["confirm_password"]
         if password == confirm_password:
-            # database_handler.update_password(session.get('email'), new_password)
-            print(password)
+            database_handler.change_password(session.get('email'), password)
             return redirect("/petitions")
         else:
             return redirect("/invalid_confirmation")
@@ -118,11 +117,7 @@ def create_account_post():
         password = request.form['password']
         department = request.form['department']
         role = request.form['role']
-        # database_handler.create_account(email, password, department, role)
-        print(email)
-        print(password)
-        print(department)
-        print(role)
+        database_handler.create_account(email, password, role, department)
     return redirect("/petitions")
 
 
