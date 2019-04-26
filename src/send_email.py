@@ -16,8 +16,8 @@ def send_email(subject, msg, EMAIL_RECIEVER):
         print("Email failed to send.")
 
 
-subject = "Petition-Pronto"
-msg = "Your petition was approved"
-EMAIL_RECIEVER ="lussierc@allegheny.edu", "christianll@yahoo.com"
-
-send_email(subject, msg, EMAIL_RECIEVER)
+# subject = "Petition-Pronto"
+# msg = "Your petition was approved"
+# EMAIL_RECIEVER ="lussierc@allegheny.edu", "christianll@yahoo.com"
+#
+# send_email(subject, msg, EMAIL_RECIEVER)

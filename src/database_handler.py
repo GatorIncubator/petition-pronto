@@ -1,5 +1,6 @@
 """Gets petition info."""
 
+import send_email
 import sqlite3
 
 def get_petitions(email):
@@ -112,6 +113,26 @@ def submit_decision(petitionID, approval_decision):
     cur.execute(add_review)
     conn.commit()
 
+    if approval_decision:
+        numOfApprovals += 1
+        print(numOfApprovals)
+        add_approval = "UPDATE Approval_Responses SET numOfApprovals = {A} WHERE petitionID = {B}".format(A = numOfApprovals, B = petitionID)
+    else:
+        pass
+
+    if numOfResponses >= 4:  # num of faculty
+        if numOfApprovals >= 2:
+            student_message = "Your petition has passed."
+            teacher_message = "This email is to let you know that the reviewed petition passed."
+        else:
+            student_message = "Your petition did not pass."
+            teacher_message = "This email is to let you know that the reviewed petition did not pass."
+        student_subject = "Information About Your Petition"
+        teacher_subject = "Information About Student Petition"
+
+        #send_email.send_email(student_subject, student_message, "lussierc@allegheny.edu")
+
     conn.close()  # close database connection
 
-submit_decision(0, True)
+dec = True
+submit_decision(0, dec)
