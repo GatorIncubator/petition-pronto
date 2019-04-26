@@ -100,6 +100,7 @@ def submit_decision(petitionID, approval_decision):
     num_query = "SELECT numOfResponses, numOfApprovals FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
     num_query_obj = conn.execute(num_query)
     num_tuple = num_query_obj.fetchall()
+    print(num_tuple)
     try:
         numOfResponses = num_tuple[0][0]
         print("RESPONSES", numOfResponses)
@@ -113,10 +114,11 @@ def submit_decision(petitionID, approval_decision):
     cur.execute(add_review)
     conn.commit()
 
-    if approval_decision:
+    if approval_decision is "test":
         numOfApprovals += 1
-        print(numOfApprovals)
         add_approval = "UPDATE Approval_Responses SET numOfApprovals = {A} WHERE petitionID = {B}".format(A = numOfApprovals, B = petitionID)
+        cur.execute(add_approval)
+        conn.commit()
     else:
         pass
 
@@ -130,9 +132,9 @@ def submit_decision(petitionID, approval_decision):
         student_subject = "Information About Your Petition"
         teacher_subject = "Information About Student Petition"
 
-        #send_email.send_email(student_subject, student_message, "lussierc@allegheny.edu")
+        send_email.send_email(student_subject, student_message, "lussierc@allegheny.edu")
 
     conn.close()  # close database connection
 
-dec = True
+dec = "test"
 submit_decision(0, dec)
