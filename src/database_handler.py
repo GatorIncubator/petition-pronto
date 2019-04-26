@@ -41,7 +41,7 @@ def get_petition_info(id):
     try:
         petition_info = petition_tuple[0]
     except:
-        peitition_info = ""
+        petition_info = ""
 
     return petition_info
     conn.close()
@@ -79,3 +79,23 @@ def create_account(email, password, role, department):
     cur.execute(create_user_insert)  # execute the creation
     conn.commit()  # commit changes to the database
     conn.close()  # close database connection
+
+
+def submit_decision(petitionID, approval_decision):
+    """Submits faculty's approval or denial decision for petition."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+    cur = conn.cursor()
+
+    find_petition_query = "SELECT * FROM Approval_Responses WHERE petitionID = \"{A}\"".format(A = petitionID)
+    find_petition_query_obj = conn.execute(find_petition_query)
+    petition_tuple = find_petition_query_obj.fetchall()
+    try:
+        approval_info = petition_tuple[0]
+    except:
+        create_approval = "INSERT INTO Approval_Responses(petitionID, numOfResponses, numOfApprovals) VALUES({A}, {B}, {C})".format(A = petitionID, B = 0, C = 0)
+        cur.execute(create_approval)  # execute the creation
+        conn.commit()  # commit changes to the database
+
+    conn.close()  # close database connection
+
+submit_decision(0, True)
