@@ -10,6 +10,10 @@
         <a href="/change_password">Change Password</a>
         <br>
         <a href="/logout">Logout</a>
+        {% if admin %}
+        <br>
+        <a href="/create_account">Create Account</a>
+        {% endif %}
         <hr>
         <h2>Open Petitions</h2>
         <ul>
