@@ -86,7 +86,7 @@ def submit_decision(petitionID, approval_decision):
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()
 
-    find_petition_query = "SELECT * FROM Approval_Responses WHERE petitionID = \"{A}\"".format(A = petitionID)
+    find_petition_query = "SELECT * FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
     find_petition_query_obj = conn.execute(find_petition_query)
     petition_tuple = find_petition_query_obj.fetchall()
     try:
@@ -95,6 +95,21 @@ def submit_decision(petitionID, approval_decision):
         create_approval = "INSERT INTO Approval_Responses(petitionID, numOfResponses, numOfApprovals) VALUES({A}, {B}, {C})".format(A = petitionID, B = 0, C = 0)
         cur.execute(create_approval)  # execute the creation
         conn.commit()  # commit changes to the database
+
+    num_query = "SELECT numOfResponses, numOfApprovals FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
+    num_query_obj = conn.execute(num_query)
+    num_tuple = num_query_obj.fetchall()
+    try:
+        numOfResponses = num_tuple[0][0]
+        print("RESPONSES", numOfResponses)
+        numOfApprovals = num_tuple[0][1]
+        print("APPROVALS", numOfApprovals)
+    except:
+        print("no")
+
+    #add_review = "UPDATE Approval_Responses SET numOfResponses = {A} WHERE petitionID = {B}".format(A = numOfResponses, B = petitionID)
+    #cur.execute(add_review)
+    #conn.commit()
 
     conn.close()  # close database connection
 
