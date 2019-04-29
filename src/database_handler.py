@@ -248,6 +248,7 @@ def add_petition(name, student_email, description, department):
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()  # create cursor
 
+    # get department for user entered name:
     get_dept_id_query = "SELECT ID FROM Department WHERE name = \"{A}\"".format(A = department)
     get_dept_id_obj = conn.execute(get_dept_id_query)
     dept_id_tuple = get_dept_id_obj.fetchone()
@@ -256,6 +257,7 @@ def add_petition(name, student_email, description, department):
     except:
         dept_id = ""
 
+    # find the most recently added (largest) petitionID in the database:
     max_id_query = "SELECT max(petitionID) FROM Student_Petition"  # get the most recently created acocunts id
     max_id_obj = conn.execute(max_id_query)
     max_id_tuple = max_id_obj.fetchall()
@@ -264,13 +266,10 @@ def add_petition(name, student_email, description, department):
     except:
         max_id = 0
 
-    petitionID = max_id + 1  # create newest id
+    petitionID = max_id + 1  # create newest id for use in new petition
 
-    print("Unique ID", petitionID)
-    print(dept_id)
-
+    # add new petition to database with user-entered information:
     add_petition = "INSERT INTO Student_Petition(name, email, petition, department, petitionID) VALUES(\"{A}\", \"{B}\", \"{C}\", {D}, {E})".format(A = name, B = student_email, C = description, D = dept_id, E = petitionID)
-    print(add_petition)
     cur.execute(add_petition)
     conn.commit()
 
