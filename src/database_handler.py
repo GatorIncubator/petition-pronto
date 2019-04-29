@@ -205,7 +205,7 @@ def count_votes(numOfApprovals, numOfResponses, petitionID):
             send_email.send_email(faculty_subject, faculty_message, current_email)  # send email to faculty member
 
         delete_petition(petitionID)  # the petition was reviewed; remove it from database.
-        
+
     conn.close()  # close database connection
 
 
