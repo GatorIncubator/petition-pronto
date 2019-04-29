@@ -256,11 +256,23 @@ def add_petition(name, student_email, description, department):
     except:
         dept_id = ""
 
+    max_id_query = "SELECT max(petitionID) FROM Student_Petition"  # get the most recently created acocunts id
+    max_id_obj = conn.execute(max_id_query)
+    max_id_tuple = max_id_obj.fetchall()
+    try:
+        max_id = max_id_tuple[0][0]  # store most recent id
+    except:
+        max_id = 0
+
+    petitionID = max_id + 1  # create newest id
+
+    print("Unique ID", petitionID)
     print(dept_id)
+    
     add_petition = "INSERT INTO Student_Petition(name, email, petition, department, petitionID) VALUES(\"{A}\", \"{B}\", \"{C}\", {D}, {E})".format(A = name, B = student_email, C = description, D = dept_id, E = petitionID)
     cur.execute(add_petition)
     conn.commit()
-    
+
     conn.close()
 
 
