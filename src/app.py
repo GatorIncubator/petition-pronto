@@ -26,12 +26,12 @@ def home_post():
     if not session.get('logged_in'):
         email = request.form['student_email']
         name = request.form['student_name']
-        title = request.form['petiton_title']
+        # title = request.form['petiton_title']
         description = request.form['petiton_description']
         deparment = request.form['deparment-selection']
         print(email)
         print(name)
-        print(title)
+        # print(title)
         print(description)
         print(deparment)
         return redirect('/home')
