@@ -84,8 +84,7 @@ def create_account(email, password, role, department):
 
 
 def submit_decision(petitionID, approval_decision, email):
-    """Checks if faculty has submitted a vote, submits a vote,
-    determines if petition is approved."""
+    """Checks if faculty has submitted a vote, submits a vote, determines if petition is approved."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()
 
@@ -196,24 +195,27 @@ def submit_decision(petitionID, approval_decision, email):
 def add_vote(approval_decision, petitionID, user_id, numOfResponses, numOfApprovals):
     """Adds faculty vote for a given petition."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
-    cur = conn.cursor()
+    cur = conn.cursor()  # create cursor
 
+    # adds id of voting faculty into Petition_Voters table for given petition:
     add_voted_id = "INSERT INTO Petition_Voters(petitionID, ID) VALUES({A}, {B})".format(A = petitionID, B = user_id)
     cur.execute(add_voted_id)
     conn.commit()
 
+    # updates number of responses for given petition:
     numOfResponses += 1
     add_review = "UPDATE Approval_Responses SET numOfResponses = {A} WHERE petitionID = {B}".format(A = numOfResponses, B = petitionID)
     cur.execute(add_review)
     conn.commit()
 
     if approval_decision is True:
+        # if the approval decision is true, update number of approvals in database:
         numOfApprovals += 1
         add_approval = "UPDATE Approval_Responses SET numOfApprovals = {A} WHERE petitionID = {B}".format(A = numOfApprovals, B = petitionID)
         cur.execute(add_approval)
         conn.commit()
     else:
-        pass
+        pass  # pass if the faculty does not approve the petition
 
     print("RESPONSES", numOfResponses)
     print("APPROVALS", numOfApprovals)
