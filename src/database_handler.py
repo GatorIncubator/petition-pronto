@@ -146,11 +146,13 @@ def submit_decision(petitionID, approval_decision):
         necessaryApprovals = math.ceil(len(faculty_email_list) / 2)
         print(necessaryApprovals)
         if numOfApprovals >= 2:
-            student_message = "Your petition has passed."
-            teacher_message = "This email is to let you know that the reviewed petition passed."
+            student_message = "After votes by the department faculty, it was determined that your petition has been approved."
+            teacher_message = "This email is to let you know that the reviewed petition by", student_email, "passed."
+            print(teacher_message)
         else:
-            student_message = "Your petition did not pass."
-            teacher_message = "This email is to let you know that the reviewed petition by", petition_email, "did not pass."
+            student_message = "After votes by department faculty, it was determined that your petition has been denied."
+            teacher_message = "This email is to let you know that the reviewed petition by", student_email, "did not pass."
+            print(teacher_message)
         student_subject = "Information About Your Petition"
         teacher_subject = "Information About Student Petition"
 
