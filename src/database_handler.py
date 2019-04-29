@@ -182,8 +182,6 @@ def count_votes(numOfApprovals, numOfResponses, petitionID):
     faculty_emails_obj = conn.execute(get_faculty_emails_query)
     faculty_email_list = faculty_emails_obj.fetchall()
 
-    print("CURRENT RESPONSE", numOfResponses)
-    print("CURRENT APPROVE", numOfApprovals)
     print(len(faculty_email_list))
     if numOfResponses >= len(faculty_email_list):  # check if all faculty for department have responded:
         necessaryApprovals = math.ceil(len(faculty_email_list) / 2)  # calculate majority vote needed for approval
@@ -243,6 +241,3 @@ def find(value, matrix):
         if value in list:
             return [matrix.index(list),list.index(value)]
     return -1
-
-
-submit_decision(0, True, "bristola@allegheny.edu")
