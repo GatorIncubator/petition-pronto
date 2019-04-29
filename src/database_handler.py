@@ -138,9 +138,25 @@ def submit_decision(petitionID, approval_decision):
         except:
             student_email = ""
 
-        send_email.send_email(student_subject, student_message, student_email)  # send email to the student
+        #send_email.send_email(student_subject, student_message, student_email)  # send email to the student
 
-        get_faculty_emails_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
+
+        get_petition_department = "SELECT department FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
+        get_department_obj = conn.execute(get_petition_department)
+        department_tuple = get_department_obj.fetchone()
+        try:
+            petition_department = department_tuple[0]
+        except:
+            petition_department = ""
+
+        get_faculty_emails_query = "SELECT email FROM User_Table WHERE department = {A}".format(A = petition_department)
+        faculty_emails_obj = conn.execute(get_faculty_emails_query)
+        faculty_email_list = faculty_emails_obj.fetchall()
+        #print(faculty_email_list)
+
+        #print(len(faculty_email_list))
+        for i in range(len(faculty_email_list)):
+            print(faculty_email_list[i][0])
 
     print("RESPONSES", numOfResponses)
     print("APPROVALS", numOfApprovals)
