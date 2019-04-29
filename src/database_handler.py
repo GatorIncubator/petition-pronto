@@ -1,5 +1,6 @@
 """Gets petition info."""
 
+import math
 import send_email
 import sqlite3
 
@@ -120,48 +121,48 @@ def submit_decision(petitionID, approval_decision):
     else:
         pass
 
-    if numOfResponses >= 4:  # num of faculty
+    get_student_email_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
+    get_student_email_obj = conn.execute(get_student_email_query)
+    student_email_tuple = get_student_email_obj.fetchone()
+    try:
+        student_email = student_email_tuple[0]
+    except:
+        student_email = ""
+
+    get_petition_department = "SELECT department FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
+    get_department_obj = conn.execute(get_petition_department)
+    department_tuple = get_department_obj.fetchone()
+    try:
+        petition_department = department_tuple[0]
+    except:
+        petition_department = ""
+
+    get_faculty_emails_query = "SELECT email FROM User_Table WHERE department = {A}".format(A = petition_department)
+    faculty_emails_obj = conn.execute(get_faculty_emails_query)
+    faculty_email_list = faculty_emails_obj.fetchall()
+    #print(faculty_email_list)
+
+    if numOfResponses >= len(faculty_email_list):  # num of faculty
+        necessaryApprovals = math.ceil(len(faculty_email_list) / 2)
+        print(necessaryApprovals)
         if numOfApprovals >= 2:
             student_message = "Your petition has passed."
             teacher_message = "This email is to let you know that the reviewed petition passed."
         else:
             student_message = "Your petition did not pass."
-            teacher_message = "This email is to let you know that the reviewed petition did not pass."
+            teacher_message = "This email is to let you know that the reviewed petition by", petition_email, "did not pass."
         student_subject = "Information About Your Petition"
         teacher_subject = "Information About Student Petition"
 
-        get_student_email_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
-        get_student_email_obj = conn.execute(get_student_email_query)
-        student_email_tuple = get_student_email_obj.fetchone()
-        try:
-            student_email = student_email_tuple[0]
-        except:
-            student_email = ""
+        send_email.send_email(student_subject, student_message, student_email)  # send email to the student
 
-        #send_email.send_email(student_subject, student_message, student_email)  # send email to the student
-
-        get_petition_department = "SELECT department FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
-        get_department_obj = conn.execute(get_petition_department)
-        department_tuple = get_department_obj.fetchone()
-        try:
-            petition_department = department_tuple[0]
-        except:
-            petition_department = ""
-
-        get_faculty_emails_query = "SELECT email FROM User_Table WHERE department = {A}".format(A = petition_department)
-        faculty_emails_obj = conn.execute(get_faculty_emails_query)
-        faculty_email_list = faculty_emails_obj.fetchall()
-        #print(faculty_email_list)
-
-        #print(len(faculty_email_list))
         for i in range(len(faculty_email_list)):
-            current_email = faculty_email_list[i][0])
+            current_email = faculty_email_list[i][0]
+            print(current_email)
             send_email.send_email(teacher_subject, teacher_message, current_email)  # send email to faculty member
-
 
     print("RESPONSES", numOfResponses)
     print("APPROVALS", numOfApprovals)
     conn.close()  # close database connection
-
 
 submit_decision(0, True)
