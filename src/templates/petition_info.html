@@ -27,7 +27,11 @@
           </div>
         </div>
         <form action="/petitions/{{petition_info['id']}}" method="POST">
-            <input type="checkbox" name="approved" value="approved"> Approve<br><br>
+            <select name="approved">
+                <option value="approved">Approve</option>
+                <option value="disapproved">Disapprove</option>
+            </select>
+            <br><br>
             <input type="submit" value="Submit">
         </form>
         <a class="badge badge-light btn btn-primary btn-sm"href="/petitions">Back</a>
