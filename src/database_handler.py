@@ -109,7 +109,6 @@ def submit_decision(petitionID, approval_decision, email):
     num_query = "SELECT numOfResponses, numOfApprovals FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
     num_query_obj = conn.execute(num_query)
     num_tuple = num_query_obj.fetchall()
-    #print(num_tuple)
     try:
         numOfResponses = num_tuple[0][0]
         numOfApprovals = num_tuple[0][1]
@@ -119,8 +118,6 @@ def submit_decision(petitionID, approval_decision, email):
     get_petition_voters_query = "SELECT ID FROM Petition_Voters WHERE petitionID = {A}".format(A = petitionID)
     petition_voters_obj = conn.execute(get_petition_voters_query)
     petition_voters_list = petition_voters_obj.fetchall()
-    # print(petition_voters_list)
-    # print(petition_voters_list[0][0])
 
     not_voted = False
     if len(petition_voters_list) >= 1:
@@ -135,12 +132,11 @@ def submit_decision(petitionID, approval_decision, email):
     else:
         not_voted = True
 
-
     if not_voted is True:
         print("Adding your vote.")
         add_vote(approval_decision, petitionID, id_result, numOfResponses, numOfApprovals)
     else:
-        pass
+        pass  # move on to counting votes
 
     get_student_email_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
     get_student_email_obj = conn.execute(get_student_email_query)
@@ -161,7 +157,6 @@ def submit_decision(petitionID, approval_decision, email):
     get_faculty_emails_query = "SELECT email FROM User_Table WHERE department = {A}".format(A = petition_department)
     faculty_emails_obj = conn.execute(get_faculty_emails_query)
     faculty_email_list = faculty_emails_obj.fetchall()
-    #print(faculty_email_list)
 
     if numOfResponses >= len(faculty_email_list):  # num of faculty
         necessaryApprovals = math.ceil(len(faculty_email_list) / 2)
@@ -177,18 +172,18 @@ def submit_decision(petitionID, approval_decision, email):
         student_subject = "Information About Your Petition"
         teacher_subject = "Information About Student Petition"
 
-        #send_email.send_email(student_subject, student_message, student_email)  # send email to the student
+        send_email.send_email(student_subject, student_message, student_email)  # send email to the student
 
         for i in range(len(faculty_email_list)):
             current_email = faculty_email_list[i][0]
             print(current_email)
-            #send_email.send_email(teacher_subject, teacher_message, current_email)  # send email to faculty member
-
+            send_email.send_email(teacher_subject, teacher_message, current_email)  # send email to faculty member
 
     conn.close()  # close database connection
 
 
 def add_vote(approval_decision, petitionID, user_id, numOfResponses, numOfApprovals):
+    """Adds faculty vote for a given petition."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()
 
