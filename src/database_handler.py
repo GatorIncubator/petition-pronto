@@ -121,6 +121,8 @@ def submit_decision(petitionID, approval_decision):
     else:
         pass
 
+    add_voted_id = "INSERT INTO Petition_Voters(petitionID, ID)"
+
     get_student_email_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
     get_student_email_obj = conn.execute(get_student_email_query)
     student_email_tuple = get_student_email_obj.fetchone()

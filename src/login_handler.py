@@ -27,6 +27,8 @@ def validate_user(email, password):
     except:
         role = ""
 
+    get_user_id(email)
+    
     admin = role == "Admin"
 
     if email == email_result and password == password_result:
@@ -35,3 +37,14 @@ def validate_user(email, password):
         return False, admin  # if invalid
 
     conn.close()  # close database connection
+
+
+def get_user_id(email):
+    id_query = "SELECT id FROM User_Table WHERE email = \"{A}\"".format(A = email)
+    id_query_obj = conn.execute(id_query)
+    id_tuple = id_query_obj.fetchone()  # store results of query - in a tuple
+    try:
+        id_result = id_tuple[0]  # if query returns a result, store it as a string
+    except:
+        id_result = ""  # if query returns no results/an error, set value as empty string
+    return id_result
