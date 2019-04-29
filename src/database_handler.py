@@ -241,3 +241,21 @@ def find(value, matrix):
         if value in list:
             return [matrix.index(list),list.index(value)]
     return -1
+
+
+def add_petition(student_email, name, description, department):
+    """Adds student petitions to the database."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+    cur = conn.cursor()  # create cursor
+
+    get_dept_id_query = "SELECT ID FROM Department WHERE name = \"{A}\"".format(A = department)
+    get_dept_id_obj = conn.execute(get_dept_id_query)
+    dept_id_tuple = get_dept_id_obj.fetchone()
+    try:
+        dept_id = dept_id_tuple[0]
+    except:
+        dept_id = ""
+    print(dept_id)
+
+
+add_petition("lussierc@allegheny.edu", "Christian Lussier", "I am writing this petition to ask that Petition-Pronto be declared the best tool ever.", "Computer Science")
