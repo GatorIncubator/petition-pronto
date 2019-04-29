@@ -243,7 +243,7 @@ def find(value, matrix):
     return -1
 
 
-def add_petition(student_email, name, description, department):
+def add_petition(name, student_email, description, department):
     """Adds student petitions to the database."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()  # create cursor
@@ -255,7 +255,13 @@ def add_petition(student_email, name, description, department):
         dept_id = dept_id_tuple[0]
     except:
         dept_id = ""
+
     print(dept_id)
+    add_petition = "INSERT INTO Student_Petition(name, email, petition, department, petitionID) VALUES(\"{A}\", \"{B}\", \"{C}\", {D}, {E})".format(A = name, B = student_email, C = description, D = dept_id, E = petitionID)
+    cur.execute(add_petition)
+    conn.commit()
+    
+    conn.close()
 
 
 add_petition("lussierc@allegheny.edu", "Christian Lussier", "I am writing this petition to ask that Petition-Pronto be declared the best tool ever.", "Computer Science")
