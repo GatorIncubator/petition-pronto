@@ -140,7 +140,6 @@ def submit_decision(petitionID, approval_decision):
 
         #send_email.send_email(student_subject, student_message, student_email)  # send email to the student
 
-
         get_petition_department = "SELECT department FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
         get_department_obj = conn.execute(get_petition_department)
         department_tuple = get_department_obj.fetchone()
@@ -156,7 +155,9 @@ def submit_decision(petitionID, approval_decision):
 
         #print(len(faculty_email_list))
         for i in range(len(faculty_email_list)):
-            print(faculty_email_list[i][0])
+            current_email = faculty_email_list[i][0])
+            send_email.send_email(teacher_subject, teacher_message, current_email)  # send email to faculty member
+
 
     print("RESPONSES", numOfResponses)
     print("APPROVALS", numOfApprovals)
