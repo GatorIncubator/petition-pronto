@@ -191,12 +191,10 @@ def count_votes(numOfApprovals, numOfResponses, petitionID):
             # set email messages for a passing result:
             student_message = "After votes by the department faculty, it was determined that your petition has been approved."
             faculty_message = "This email is to let you know that the reviewed petition by", student_email, "passed."
-            print(faculty_message)
         else:  # student does not have necessary amount of approvals
             # set email messages for a failing result:
             student_message = "After votes by department faculty, it was determined that your petition has been denied."
             faculty_message = "This email is to let you know that the reviewed petition by", student_email, "did not pass."
-            print(faculty_message)
 
         student_subject = "Information About Your Petition" # set subject of student email
         faculty_subject = "Information About Student Petition" # set subject of faculty email
@@ -206,7 +204,7 @@ def count_votes(numOfApprovals, numOfResponses, petitionID):
         for i in range(len(faculty_email_list)):
             current_email = faculty_email_list[i][0]
             print(current_email)
-            #send_email.send_email(faculty_subject, faculty_message, current_email)  # send email to faculty member
+            send_email.send_email(faculty_subject, faculty_message, current_email)  # send email to faculty member
 
     conn.close()  # close database connection
 
@@ -236,9 +234,8 @@ def add_vote(approval_decision, petitionID, user_id, numOfResponses, numOfApprov
     else:
         pass  # pass if the faculty does not approve the petition
 
-    print("RESPONSES", numOfResponses)
-    print("APPROVALS", numOfApprovals)
     conn.close()
+
 
 def find(value, matrix):
     """Finds a item in a list of tuples."""
