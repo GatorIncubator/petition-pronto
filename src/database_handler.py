@@ -1,4 +1,4 @@
-"""Gets petition info."""
+"""Petition interactions with the database."""
 
 import math
 import send_email
@@ -83,10 +83,18 @@ def create_account(email, password, role, department):
     conn.close()  # close database connection
 
 
-def submit_decision(petitionID, approval_decision):
+def submit_decision(petitionID, approval_decision, email):
     """Submits faculty's approval or denial decision for petition."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()
+
+    id_query = "SELECT id FROM User_Table WHERE email = \"{A}\"".format(A = email)
+    id_query_obj = conn.execute(id_query)
+    id_tuple = id_query_obj.fetchone()  # store results of query - in a tuple
+    try:
+        id_result = id_tuple[0]  # if query returns a result, store it as a string
+    except:
+        id_result = ""  # if query returns no results/an error, set value as empty string
 
     find_petition_query = "SELECT * FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
     find_petition_query_obj = conn.execute(find_petition_query)
@@ -108,20 +116,31 @@ def submit_decision(petitionID, approval_decision):
     except:
         pass
 
-    numOfResponses += 1
-    add_review = "UPDATE Approval_Responses SET numOfResponses = {A} WHERE petitionID = {B}".format(A = numOfResponses, B = petitionID)
-    cur.execute(add_review)
-    conn.commit()
+    get_petition_voters_query = "SELECT ID FROM Petition_Voters WHERE petitionID = {A}".format(A = petitionID)
+    petition_voters_obj = conn.execute(get_petition_voters_query)
+    petition_voters_list = petition_voters_obj.fetchall()
+    # print(petition_voters_list)
+    # print(petition_voters_list[0][0])
 
-    if approval_decision is True:
-        numOfApprovals += 1
-        add_approval = "UPDATE Approval_Responses SET numOfApprovals = {A} WHERE petitionID = {B}".format(A = numOfApprovals, B = petitionID)
-        cur.execute(add_approval)
-        conn.commit()
+    not_voted = False
+    if len(petition_voters_list) >= 1:
+        for j in range(len(petition_voters_list)):
+            print(petition_voters_list[j][0])
+            if id_result == petition_voters_list[j][0]:
+                print("You have already voted.")
+                not_voted = False
+            else:
+                print("You have not voted.")
+                not_voted = True
+    else:
+        not_voted = True
+
+
+    if not_voted is True:
+        print("Adding your vote.")
+        add_vote(approval_decision, petitionID, id_result, numOfResponses, numOfApprovals)
     else:
         pass
-
-    add_voted_id = "INSERT INTO Petition_Voters(petitionID, ID)"
 
     get_student_email_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
     get_student_email_obj = conn.execute(get_student_email_query)
@@ -158,15 +177,40 @@ def submit_decision(petitionID, approval_decision):
         student_subject = "Information About Your Petition"
         teacher_subject = "Information About Student Petition"
 
-        send_email.send_email(student_subject, student_message, student_email)  # send email to the student
+        #send_email.send_email(student_subject, student_message, student_email)  # send email to the student
 
         for i in range(len(faculty_email_list)):
             current_email = faculty_email_list[i][0]
             print(current_email)
-            send_email.send_email(teacher_subject, teacher_message, current_email)  # send email to faculty member
+            #send_email.send_email(teacher_subject, teacher_message, current_email)  # send email to faculty member
+
+
+    conn.close()  # close database connection
+
+
+def add_vote(approval_decision, petitionID, user_id, numOfResponses, numOfApprovals):
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+    cur = conn.cursor()
+
+    add_voted_id = "INSERT INTO Petition_Voters(petitionID, ID) VALUES({A}, {B})".format(A = petitionID, B = user_id)
+    cur.execute(add_voted_id)
+    conn.commit()
+
+    numOfResponses += 1
+    add_review = "UPDATE Approval_Responses SET numOfResponses = {A} WHERE petitionID = {B}".format(A = numOfResponses, B = petitionID)
+    cur.execute(add_review)
+    conn.commit()
+
+    if approval_decision is True:
+        numOfApprovals += 1
+        add_approval = "UPDATE Approval_Responses SET numOfApprovals = {A} WHERE petitionID = {B}".format(A = numOfApprovals, B = petitionID)
+        cur.execute(add_approval)
+        conn.commit()
+    else:
+        pass
 
     print("RESPONSES", numOfResponses)
     print("APPROVALS", numOfApprovals)
-    conn.close()  # close database connection
+    conn.close()
 
-submit_decision(0, True)
+submit_decision(0, True, "email1@email.com")
