@@ -268,8 +268,9 @@ def add_petition(name, student_email, description, department):
 
     print("Unique ID", petitionID)
     print(dept_id)
-    
+
     add_petition = "INSERT INTO Student_Petition(name, email, petition, department, petitionID) VALUES(\"{A}\", \"{B}\", \"{C}\", {D}, {E})".format(A = name, B = student_email, C = description, D = dept_id, E = petitionID)
+    print(add_petition)
     cur.execute(add_petition)
     conn.commit()
 
