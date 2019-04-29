@@ -117,7 +117,8 @@ def submit_decision(petitionID, approval_decision, email):
         numOfResponses = num_tuple[0][0]  # store the number of responses
         numOfApprovals = num_tuple[0][1]  # store the number of approvals
     except:
-        pass
+        numOfResponses = 0
+        numOfApprovals = 0
 
     # get the id's of faculty who have voted in the petition:
     get_petition_voters_query = "SELECT ID FROM Petition_Voters WHERE petitionID = {A}".format(A = petitionID)
@@ -125,18 +126,6 @@ def submit_decision(petitionID, approval_decision, email):
     petition_voters_list = petition_voters_obj.fetchall()
 
     not_voted = False  # declare non_voted
-    # if len(petition_voters_list) >= 1:  # check if there are any faculty voters for the petition
-    #     for j in range(len(petition_voters_list)):
-    #         # find if the faculty member has voted:
-    #         if id_result == petition_voters_list[j][0]:
-    #             # the faculty member has voted
-    #             print("You have already voted.")
-    #         else:
-    #             print("You have not voted.")
-    #             not_voted = True  # the faculty member has not yet voted
-    #             break
-    # else:
-    #     not_voted = True  # if there are no voters, then the faculty member has not voted
 
     if find(id_result,petition_voters_list) != -1:
         not_voted = False
@@ -148,10 +137,29 @@ def submit_decision(petitionID, approval_decision, email):
 
     if not_voted is True:  # check if the faculty member has not voted
         print("Adding your vote.")
+        print("SUBMIT RESPONSES", numOfResponses)
         add_vote(approval_decision, petitionID, id_result, numOfResponses, numOfApprovals)  # submit new vote
     else:
-        pass  # move on to counting votes
+        print("No vote will be added.")
 
+    # get the updated number of approvals and responses:
+    num_query = "SELECT numOfResponses, numOfApprovals FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
+    num_query_obj = conn.execute(num_query)
+    num_tuple = num_query_obj.fetchall()
+    try:
+        numOfResponses = num_tuple[0][0]  # store the number of responses
+        numOfApprovals = num_tuple[0][1]  # store the number of approvals
+    except:
+        numOfResponses = 0
+        numOfApprovals = 0
+
+    count_votes(numOfApprovals, numOfResponses, petitionID)  # count current votes
+
+
+def count_votes(numOfApprovals, numOfResponses, petitionID):
+    """Counts the votes for given petition."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+    cur = conn.cursor()
     # get the student email for the petition:
     get_student_email_query = "SELECT email FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
     get_student_email_obj = conn.execute(get_student_email_query)
@@ -175,6 +183,8 @@ def submit_decision(petitionID, approval_decision, email):
     faculty_emails_obj = conn.execute(get_faculty_emails_query)
     faculty_email_list = faculty_emails_obj.fetchall()
 
+    print("CURRENT RESPONSE", numOfResponses)
+    print(len(faculty_email_list))
     if numOfResponses >= len(faculty_email_list):  # check if all faculty for department have responded:
         necessaryApprovals = math.ceil(len(faculty_email_list) / 2)  # calculate majority vote needed for approval
         if numOfApprovals >= necessaryApprovals:  # check if student has the necessary amount of approvals
@@ -196,7 +206,7 @@ def submit_decision(petitionID, approval_decision, email):
         for i in range(len(faculty_email_list)):
             current_email = faculty_email_list[i][0]
             print(current_email)
-            send_email.send_email(faculty_subject, faculty_message, current_email)  # send email to faculty member
+            #send_email.send_email(faculty_subject, faculty_message, current_email)  # send email to faculty member
 
     conn.close()  # close database connection
 
@@ -238,4 +248,4 @@ def find(value,matrix):
     return -1
 
 
-submit_decision(0, True, "baldeosinghm@allegheny.edu")
+submit_decision(0, True, "cerdamejiaj@allegheny.edu")
