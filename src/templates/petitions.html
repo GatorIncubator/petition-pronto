@@ -2,11 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Petition Pronto</title>
     </head>
     <body>
-        <h1>Petitions</h1>
+      <div class="container">
+        <div class="jumbotron jumbotron-fluid">
+          <h1> <i class="fas fa-file-alt" aria-hidden="true"></i>Petitions</h1>
+        </div>
+
+
+
         <a href="/change_password">Change Password</a>
         <br>
         <a href="/logout">Logout</a>
@@ -21,5 +29,6 @@
             <li>Name:{{petition['name']}} | Email:{{petition['email']}} | Department:{{petition['department']}} | <a href="/petitions/{{petition['id']}}">Inspect</a></li>
             {% endfor %}
         </ul>
+          </div>
     </body>
 </html>
