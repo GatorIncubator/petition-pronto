@@ -148,7 +148,8 @@ def petitions_inspect_get(id):
 def petitions_inspect_post(id):
     if session.get('logged_in'):
         approved = request.form['approved']
-        print(approved)
+        approved = approved == "approved"
+        database_handler.submit_decision(id, approved, session['email'])
         return redirect("/petitions")
     else:
         return redirect("/home")
