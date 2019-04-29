@@ -125,17 +125,26 @@ def submit_decision(petitionID, approval_decision, email):
     petition_voters_list = petition_voters_obj.fetchall()
 
     not_voted = False  # declare non_voted
-    if len(petition_voters_list) >= 1:  # check if there are any faculty voters for the petition
-        for j in range(len(petition_voters_list)):
-            # find if the faculty member has voted:
-            if id_result == petition_voters_list[j][0]:
-                # the faculty member has voted
-                print("You have already voted.")
-            else:
-                print("You have not voted.")
-                not_voted = True  # the faculty member has not yet voted
+    # if len(petition_voters_list) >= 1:  # check if there are any faculty voters for the petition
+    #     for j in range(len(petition_voters_list)):
+    #         # find if the faculty member has voted:
+    #         if id_result == petition_voters_list[j][0]:
+    #             # the faculty member has voted
+    #             print("You have already voted.")
+    #         else:
+    #             print("You have not voted.")
+    #             not_voted = True  # the faculty member has not yet voted
+    #             break
+    # else:
+    #     not_voted = True  # if there are no voters, then the faculty member has not voted
+
+    if find(id_result,petition_voters_list) != -1:
+        not_voted = False
+        print(find(id_result,petition_voters_list))
+        print("You have already voted.")
     else:
-        not_voted = True  # if there are no voters, then the faculty member has not voted
+        not_voted = True
+        print("You have not voted.")
 
     if not_voted is True:  # check if the faculty member has not voted
         print("Adding your vote.")
@@ -171,8 +180,8 @@ def submit_decision(petitionID, approval_decision, email):
         if numOfApprovals >= necessaryApprovals:  # check if student has the necessary amount of approvals
             # set email messages for a passing result:
             student_message = "After votes by the department faculty, it was determined that your petition has been approved."
-            teacher_message = "This email is to let you know that the reviewed petition by", student_email, "passed."
-            print(teacher_message)
+            faculty_message = "This email is to let you know that the reviewed petition by", student_email, "passed."
+            print(faculty_message)
         else:  # student does not have necessary amount of approvals
             # set email messages for a failing result:
             student_message = "After votes by department faculty, it was determined that your petition has been denied."
@@ -221,4 +230,12 @@ def add_vote(approval_decision, petitionID, user_id, numOfResponses, numOfApprov
     print("APPROVALS", numOfApprovals)
     conn.close()
 
-submit_decision(0, True, "email1@email.com")
+def find(value,matrix):
+    """Finds a item in a list of lists."""
+    for list in matrix:
+        if value in list:
+            return [matrix.index(list),list.index(value)]
+    return -1
+
+
+submit_decision(0, True, "baldeosinghm@allegheny.edu")
