@@ -137,24 +137,23 @@ def submit_decision(petitionID, approval_decision, email):
 
     if not_voted is True:  # check if the faculty member has not voted
         print("Adding your vote.")
-        print("SUBMIT RESPONSES", numOfResponses)
         add_vote(approval_decision, petitionID, id_result, numOfResponses, numOfApprovals)  # submit new vote
+        # get the updated number of approvals and responses:
+        num_query = "SELECT numOfResponses, numOfApprovals FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
+        num_query_obj = conn.execute(num_query)
+        num_tuple = num_query_obj.fetchall()
+        try:
+            numOfResponses = num_tuple[0][0]  # store the number of responses
+            numOfApprovals = num_tuple[0][1]  # store the number of approvals
+        except:
+            numOfResponses = 0
+            numOfApprovals = 0
+
+        count_votes(numOfApprovals, numOfResponses, petitionID)  # count current votes
     else:
         print("No vote will be added.")
 
-    # get the updated number of approvals and responses:
-    num_query = "SELECT numOfResponses, numOfApprovals FROM Approval_Responses WHERE petitionID = {A}".format(A = petitionID)
-    num_query_obj = conn.execute(num_query)
-    num_tuple = num_query_obj.fetchall()
-    try:
-        numOfResponses = num_tuple[0][0]  # store the number of responses
-        numOfApprovals = num_tuple[0][1]  # store the number of approvals
-    except:
-        numOfResponses = 0
-        numOfApprovals = 0
-
-    count_votes(numOfApprovals, numOfResponses, petitionID)  # count current votes
-
+    conn.close()
 
 def count_votes(numOfApprovals, numOfResponses, petitionID):
     """Counts the votes for given petition."""
@@ -184,6 +183,7 @@ def count_votes(numOfApprovals, numOfResponses, petitionID):
     faculty_email_list = faculty_emails_obj.fetchall()
 
     print("CURRENT RESPONSE", numOfResponses)
+    print("CURRENT APPROVE", numOfApprovals)
     print(len(faculty_email_list))
     if numOfResponses >= len(faculty_email_list):  # check if all faculty for department have responded:
         necessaryApprovals = math.ceil(len(faculty_email_list) / 2)  # calculate majority vote needed for approval
@@ -240,12 +240,12 @@ def add_vote(approval_decision, petitionID, user_id, numOfResponses, numOfApprov
     print("APPROVALS", numOfApprovals)
     conn.close()
 
-def find(value,matrix):
-    """Finds a item in a list of lists."""
+def find(value, matrix):
+    """Finds a item in a list of tuples."""
     for list in matrix:
         if value in list:
             return [matrix.index(list),list.index(value)]
     return -1
 
 
-submit_decision(0, True, "cerdamejiaj@allegheny.edu")
+submit_decision(0, True, "bristola@allegheny.edu")
