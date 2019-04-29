@@ -275,9 +275,13 @@ def add_petition(name, student_email, description, department):
 
     conn.close()
 
+
 def delete_petition(petitionID):
     """Removes student petitions from the database."""
     conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
     cur = conn.cursor()  # create cursor
 
-add_petition("lussierc@allegheny.edu", "Christian Lussier", "I am writing this petition to ask that Petition-Pronto be declared the best tool ever.", "Computer Science")
+    # deletes the petition for the specified petitionID
+    delete_petition = "DELETE FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
+    cur.execute(delete_petition)
+    conn.commit()
