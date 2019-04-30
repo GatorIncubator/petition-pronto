@@ -3,18 +3,29 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
         <title>Petition Pronto</title>
     </head>
     <body>
-        <h1>Petition Info</h1>
-        <a href="/petitions">Back</a>
-        <hr>
-        <h2>{{petition_info['name']}}</h2>
-        <h3>{{petition_info['email']}}</h3>
-        <h4>{{petition_info['department']}}</h4>
-        <hr>
-        <p>{{petition_info['content']}}</p>
-        <hr>
+      <div class="container">
+
+
+        <div class="jumbotron jumbotron-fluid">
+          <h1> <i class="fas fa-file-alt" aria-hidden="true"></i>Petition Info</h1>
+        </div>
+
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{petition_info['name']}}</li>
+          <li class="list-group-item">{{petition_info['email']}}</li>
+          <li class="list-group-item">{{petition_info['department']}}</li>
+        </ul>
+        <div class="card">
+          <div class="card-body">
+            {{petition_info['content']}}
+          </div>
+        </div>
         <form action="/petitions/{{petition_info['id']}}" method="POST">
             <select name="approved">
                 <option value="approved">Approve</option>
@@ -23,5 +34,8 @@
             <br><br>
             <input type="submit" value="Submit">
         </form>
+        <a class="badge badge-light btn btn-primary btn-sm"href="/petitions">Back</a>
+        </div>
+
     </body>
 </html>
