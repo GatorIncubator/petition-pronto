@@ -3,16 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css')}}">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
         <title>Petition Pronto</title>
     </head>
     <body>
-        <h1>Create Account</h1>
-        <form action="/create_account" method="POST">
-            <input type="email" name="email">
-            <input type="password" name="password">
-            <input type="text" name="department">
-            <input type="text" name="role">
-            <input type="submit" value="Create Account">
+
+        <form action="/create_account" method="POST" class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+            <input type="email"class="form-control" placeholder="Email address" name="email">
+            <input type="password" name="password" class="form-control" placeholder="password">
+            <input type="text" name="department" placeholder="Department" class="form-control">
+            <input type="text" name="role" placeholder="Role" class="form-control">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Account">
         </form>
     </body>
 </html>
