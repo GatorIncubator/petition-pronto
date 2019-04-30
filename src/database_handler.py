@@ -204,6 +204,8 @@ def count_votes(numOfApprovals, numOfResponses, petitionID):
             print(current_email)
             send_email.send_email(faculty_subject, faculty_message, current_email)  # send email to faculty member
 
+        delete_petition(petitionID)  # the petition was reviewed; remove it from database.
+
     conn.close()  # close database connection
 
 
@@ -241,3 +243,47 @@ def find(value, matrix):
         if value in list:
             return [matrix.index(list),list.index(value)]
     return -1
+
+
+def add_petition(name, student_email, description, department):
+    """Adds student petitions to the database."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+    cur = conn.cursor()  # create cursor
+
+    # get department for user entered name:
+    get_dept_id_query = "SELECT ID FROM Department WHERE name = \"{A}\"".format(A = department)
+    get_dept_id_obj = conn.execute(get_dept_id_query)
+    dept_id_tuple = get_dept_id_obj.fetchone()
+    try:
+        dept_id = dept_id_tuple[0]
+    except:
+        dept_id = ""
+
+    # find the most recently added (largest) petitionID in the database:
+    max_id_query = "SELECT max(petitionID) FROM Student_Petition"  # get the most recently created acocunts id
+    max_id_obj = conn.execute(max_id_query)
+    max_id_tuple = max_id_obj.fetchall()
+    try:
+        max_id = max_id_tuple[0][0]  # store most recent id
+    except:
+        max_id = 0
+
+    petitionID = max_id + 1  # create newest id for use in new petition
+
+    # add new petition to database with user-entered information:
+    add_petition = "INSERT INTO Student_Petition(name, email, petition, department, petitionID) VALUES(\"{A}\", \"{B}\", \"{C}\", {D}, {E})".format(A = name, B = student_email, C = description, D = dept_id, E = petitionID)
+    cur.execute(add_petition)
+    conn.commit()
+
+    conn.close()
+
+
+def delete_petition(petitionID):
+    """Removes student petitions from the database."""
+    conn = sqlite3.connect("petitiondb.sqlite3")  # connect to the database
+    cur = conn.cursor()  # create cursor
+
+    # deletes the petition for the specified petitionID
+    delete_petition = "DELETE FROM Student_Petition WHERE petitionID = {A}".format(A = petitionID)
+    cur.execute(delete_petition)
+    conn.commit()
