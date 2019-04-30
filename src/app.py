@@ -24,17 +24,20 @@ def home_get():
 @app.route("/home", methods=["POST"])
 def home_post():
     if not session.get('logged_in'):
-        email = request.form['student_email']
+        student_email = request.form['student_email']
         name = request.form['student_name']
-        # title = request.form['petiton_title']
         description = request.form['petiton_description']
-        deparment = request.form['deparment-selection']
-        print(email)
-        print(name)
-        # print(title)
-        print(description)
-        print(deparment)
-        return redirect('/home')
+        department = request.form['department-selection']
+        database_handler.add_petition(name, student_email, description, department)
+        return redirect('/success')
+    else:
+        return redirect("/petitions")
+
+
+@app.route("/success", methods=["GET"])
+def success_get():
+    if not session.get('logged_in'):
+        return render_template('success.html')
     else:
         return redirect("/petitions")
 
