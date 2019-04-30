@@ -14,7 +14,7 @@
         <!-- <h1>Welcome to <i>Petition Pronto</i></h1>
         <a href="/login">Login</a>
         <hr>
-        <p>This is an application to rapidly submit course petition requests to faculty at Allegheny College</p> -->\
+        <p>This is an application to rapidly submit course petition requests to faculty at Allegheny College</p> -->
 
         <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
@@ -45,19 +45,19 @@
           <form action="/home" method="post">
             <div class="form-group">
               <label for="email">Email address</label>
-              <input type="email" name="student_email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              <input type="email" name="student_email" class="form-control" id="exampleFormControlInput1" required placeholder="name@example.com">
             </div>
             <div class="form-group">
               <label for="student_name">Your Name</label>
-              <input type="text" name="student_name" class="form-control" id="exampleFormControlInput1" placeholder="">
+              <input type="text" name="student_name" class="form-control" id="exampleFormControlInput1" required placeholder="">
             </div>
             <div class="form-group">
               <label for="petiton_description">Petition details</label>
-              <textarea name="petiton_description" rows="5"  class="form-control input-lg" id="petiton_description" data-error_msg = "Please enter petition details"></textarea>
+              <textarea name="petiton_description" rows="5"  class="form-control input-lg" id="petiton_description" data-error_msg = "Please enter petition details" required></textarea>
             </div>
             <div class="form-group">
               <label for="Deparment-selection">Please select department</label>
-              <select class="form-control" name="deparment-selection" id="exampleFormControlSelect1">
+              <select class="form-control" name="department-selection" id="exampleFormControlSelect1" required>
                 <option>Computer Science</option>
                 <option>Economics</option>
 
