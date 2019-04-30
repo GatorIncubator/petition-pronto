@@ -118,7 +118,7 @@ def create_account_post():
     if session.get('logged_in') and session.get("admin"):
         email = request.form['email']
         password = request.form['password']
-        department = request.form['department']
+        department = request.form['department-selection']
         role = request.form['role']
         database_handler.create_account(email, password, role, department)
     return redirect("/petitions")
