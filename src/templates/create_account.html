@@ -14,7 +14,12 @@
             <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
             <input type="email"class="form-control" placeholder="Email address" name="email">
             <input type="password" name="password" class="form-control" placeholder="password">
-            <input type="text" name="department" placeholder="Department" class="form-control">
+            <div class="form-group">
+              <label for="Deparment-selection">Please select department</label>
+              <select class="form-control" name="department-selection" id="exampleFormControlSelect1" required>
+                <option>Computer Science</option>
+              </select>
+            </div>
             <input type="text" name="role" placeholder="Role" class="form-control">
             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Account">
         </form>

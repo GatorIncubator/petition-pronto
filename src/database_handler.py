@@ -75,7 +75,16 @@ def create_account(email, password, role, department):
 
     id = max_id + 1  # create newest id
 
-    create_user_insert = "INSERT INTO User_Table(id, email, password, role, department) VALUES({A}, \"{B}\", \"{C}\", \"{D}\", {E})".format(A = id, B = email, C = password, D = role, E = department)
+    # get department for user entered name:
+    get_dept_id_query = "SELECT ID FROM Department WHERE name = \"{A}\"".format(A = department)
+    get_dept_id_obj = conn.execute(get_dept_id_query)
+    dept_id_tuple = get_dept_id_obj.fetchone()
+    try:
+        dept_id = dept_id_tuple[0]
+    except:
+        dept_id = ""
+
+    create_user_insert = "INSERT INTO User_Table(id, email, password, role, department) VALUES({A}, \"{B}\", \"{C}\", \"{D}\", {E})".format(A = id, B = email, C = password, D = role, E = dept_id)
 
     cur = conn.cursor()
     cur.execute(create_user_insert)  # execute the creation
